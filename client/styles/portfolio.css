@@ -1,0 +1,76 @@
+/* Portfolio Pages Styles */
+
+/* Horizontal Scroll Styles */
+.horizontal-scroll {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.horizontal-scroll-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.horizontal-scroll-panel {
+  position: relative;
+  height: 100%;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  flex-shrink: 0;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Portfolio Gallery Styles */
+.gallery-item img {
+  transition: all 0.5s ease;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+/* Portfolio Header Styles */
+.portfolio-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.portfolio-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.8) 100%);
+  z-index: 1;
+}
+
+.portfolio-header-content {
+  position: relative;
+  z-index: 2;
+}
