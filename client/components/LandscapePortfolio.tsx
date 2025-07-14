@@ -73,7 +73,7 @@ const LandscapePortfolio = () => {
 
   return (
     <div className="bg-black text-white min-h-screen">
-      {/* Portfolio Header with reduced opacity */}
+
      
       {/* Horizontal Scroll Section with Landscape Photos */}
       <section ref={horizontalRef} className="horizontal-scroll">
@@ -93,22 +93,15 @@ const LandscapePortfolio = () => {
           )}
           
           {landscapePhotos && landscapePhotos.length > 0 ? (
-            landscapePhotos.map((photo, index) => (
+            landscapePhotos.map((photo) => (
               <div 
                 key={photo.id} 
-                className={`horizontal-scroll-panel bg-neutral-${900 - (index % 3) * 100}`}
+                className="horizontal-scroll-panel"
               >
                 <img 
                   src={photo.link} 
-                  alt={photo.name} 
+                  alt={photo.name || `Landscape photo`}
                   className="w-full h-full object-cover"
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                  }}
                   loading="lazy"
                 />
               </div>

@@ -24,8 +24,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+  padding: 0;
   flex-shrink: 0;
+  overflow: hidden;
+}
+
+.horizontal-scroll-panel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Portrait Gallery Styles - 3-Column Scrollable Layout - Full Page */

@@ -150,3 +150,52 @@ html {
     transform: rotate(360deg);
   }
 }
+
+/* Entry animation styles - Camera Flash Effect */
+@keyframes textFlash {
+  0% { color: #ffffff; text-shadow: 0 0 20px #ffffff, 0 0 30px #ffffff; filter: brightness(2); }
+  10% { color: #ffffff; text-shadow: 0 0 40px #ffffff, 0 0 60px #ffffff; filter: brightness(3); }
+  100% { color: #ffffff; text-shadow: none; filter: brightness(1); }
+}
+
+@keyframes textReveal {
+  0% { opacity: 0; filter: blur(8px); }
+  100% { opacity: 1; filter: blur(0); }
+}
+
+.flash-text {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(8px);
+}
+
+.text-flash {
+  animation: textFlash 0.8s ease-out;
+}
+
+.overlay-panel {
+  transform-origin: top;
+  will-change: transform;
+}
+
+/* For transform origin utility */
+.transform-origin-top {
+  transform-origin: top;
+}
+
+/* For scale utility */
+.scaleY-0 {
+  transform: scaleY(0);
+}
+
+.scaleY-1 {
+  transform: scaleY(1);
+}
+
+
+
+
+
+
+
+
