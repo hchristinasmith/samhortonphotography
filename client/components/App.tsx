@@ -19,28 +19,64 @@ function App() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <header className="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md py-4 px-6 border-b border-neutral-800">
-        <nav className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="text-2xl font-light tracking-wider">
+      {/* Main Content */}
+      <main>
+        <div className="fixed top-6 left-6 z-50">
+          <h1 className="text-xl font-light tracking-widest uppercase">
             SAM HORTON PHOTOGRAPHY
-          </div>
-          <div className="flex gap-8 font-light">
-            <a href="/" className="hover:text-neutral-400 transition-colors">Portfolio</a>
-            <a href="/about" className="hover:text-neutral-400 transition-colors">About</a>
-            <a href="/contact" className="hover:text-neutral-400 transition-colors">Contact</a>
-          </div>
-        </nav>
-      </header>
-      
-      <main className="pt-20">
+          </h1>
+        </div>
         <Outlet />
       </main>
       
-      <footer className="py-8 px-6 mt-16 border-t border-neutral-800">
-        <div className="max-w-7xl mx-auto text-center text-sm text-neutral-400">
-          <p> {new Date().getFullYear()} Sam Horton Photography. All rights reserved.</p>
-        </div>
+      {/* Footer */}
+      <footer className="fixed bottom-6 right-6 z-40 text-xs font-light text-neutral-400">
+        <p>{new Date().getFullYear()} &copy; All rights reserved</p>
       </footer>
+      
+      {/* Navigation */}
+      <header className="fixed bottom-6 left-0 right-0">
+        <nav className="flex justify-center">
+          <ul className="flex items-center gap-2 font-light text-sm">
+          
+          <li>
+              <a 
+                href="/" 
+                className="hover:text-neutral-400 transition-colors uppercase tracking-wider"
+              >
+                Home
+              </a>
+            </li>
+            |
+            <li>
+              <a 
+                href="/landscape" 
+                className="hover:text-neutral-400 transition-colors uppercase tracking-wider"
+              >
+                Landscapes
+              </a>
+            </li>
+            |
+            <li>
+              <a 
+                href="/portrait" 
+                className="hover:text-neutral-400 transition-colors uppercase tracking-wider"
+              >
+                Portraits
+              </a>
+            </li>
+            |
+            <li>
+              <a 
+                href="/contact" 
+                className="hover:text-neutral-400 transition-colors uppercase tracking-wider"
+              >
+                Contact
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
     </div>
   )
 }

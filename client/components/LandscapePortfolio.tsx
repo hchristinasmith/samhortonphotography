@@ -72,31 +72,9 @@ const LandscapePortfolio = () => {
   }, [photos])
 
   return (
-    <div className="bg-black text-white min-h-screen pt-20">
+    <div className="bg-black text-white min-h-screen">
       {/* Portfolio Header with reduced opacity */}
-      <div 
-        ref={headerRef} 
-        className="relative h-64 md:h-96 overflow-hidden flex items-center justify-center"
-      >
-        <div 
-          className="absolute inset-0 bg-cover bg-center opacity-60" 
-          style={{ 
-            backgroundImage: 'url(/shcaptured/Photo 08-04-2025, 2 19 25 PM.jpg)', 
-            filter: 'brightness(0.4)' 
-          }}
-        ></div>
-      </div>
-
-      {/* Portfolio Description */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <p className="text-lg text-neutral-300 mb-8">
-          My landscape photography focuses on capturing the raw beauty of nature. From dramatic mountain 
-          ranges to serene coastal scenes, I strive to convey the emotion and atmosphere of each location.
-          Each image is carefully composed and edited to highlight the natural elements that make these 
-          landscapes so captivating.
-        </p>
-      </div>
-
+     
       {/* Horizontal Scroll Section with Landscape Photos */}
       <section ref={horizontalRef} className="horizontal-scroll">
         <div ref={panelsRef} className="horizontal-scroll-content">

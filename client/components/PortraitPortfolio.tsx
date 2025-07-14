@@ -4,6 +4,9 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { getLocalPhotos } from '../apiClient'
 
+// Import portfolio styles
+import '../styles/portfolio.css'
+
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger)
 
@@ -11,6 +14,10 @@ const PortraitPortfolio = () => {
   // Refs for GSAP animations
   const headerRef = useRef<HTMLDivElement>(null)
   const galleryRef = useRef<HTMLDivElement>(null)
+  const portraitRefs = useRef<(HTMLDivElement | null)[]>([])
+  
+  // Clear the refs array when component re-renders
+  portraitRefs.current = []
 
   // Fetch photos from local shcaptured folder
   const {
@@ -22,13 +29,16 @@ const PortraitPortfolio = () => {
     queryFn: () => getLocalPhotos(),
   })
 
-  // Filter photos that might be portraits (based on naming convention or other criteria)
-  // This is a simple filter - you might want to use a more sophisticated approach
-  const portraitPhotos = photos?.filter((photo, index) => {
-    // For demo purposes, let's consider odd-indexed photos as portraits
-    // In a real app, you'd filter based on folder structure, metadata, or naming conventions
-    return index % 2 === 1
-  })
+  // Use all photos from the local folder for now
+  // In a production app, you'd filter based on folder structure, metadata, or naming conventions
+  const portraitPhotos = photos
+
+  // Add to refs array
+  const addToRefs = (el: HTMLDivElement | null) => {
+    if (el && !portraitRefs.current.includes(el)) {
+      portraitRefs.current.push(el)
+    }
+  }
 
   // Initialize GSAP animations
   useEffect(() => {
@@ -46,24 +56,34 @@ const PortraitPortfolio = () => {
       )
     }
 
-    // Gallery animations
-    if (galleryRef.current) {
-      const items = galleryRef.current.querySelectorAll('.gallery-item')
-      gsap.fromTo(
-        items,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: galleryRef.current,
-            start: 'top 80%',
+    // Create reveal animations for portrait columns
+    if (portraitRefs.current.length > 0) {
+      // Create reveal animations for each portrait
+      // For scrollable columns, we'll use a simpler animation approach
+      // that doesn't rely on ScrollTrigger since each column has its own scroll context
+      portraitRefs.current.forEach((portrait, index) => {
+        if (!portrait) return
+        
+        // Calculate staggered delay based on position in its column
+        const columnIndex = index % 3
+        const positionInColumn = Math.floor(index / 3)
+        const delay = 0.1 + (columnIndex * 0.1) + (positionInColumn * 0.05)
+        
+        gsap.fromTo(
+          portrait,
+          { 
+            opacity: 0,
+            y: 20,
           },
-        }
-      )
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            delay: delay,
+          }
+        )
+      })
     }
 
     // Clean up ScrollTrigger instances on unmount
@@ -73,39 +93,9 @@ const PortraitPortfolio = () => {
   }, [photos])
 
   return (
-    <div className="bg-black text-white min-h-screen pt-20">
-      {/* Portfolio Header */}
-      <div 
-        ref={headerRef} 
-        className="relative h-64 md:h-96 overflow-hidden flex items-center justify-center"
-      >
-        <div 
-          className="absolute inset-0 bg-cover bg-center" 
-          style={{ 
-            backgroundImage: 'url(https://source.unsplash.com/random/1920x1080/?portrait,people)', 
-            filter: 'brightness(0.5)' 
-          }}
-        ></div>
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl md:text-6xl font-light mb-4">Portrait Photography</h1>
-          <p className="text-xl text-neutral-200 max-w-2xl mx-auto">
-            Capturing personality and emotion in every frame
-          </p>
-        </div>
-      </div>
-
-      {/* Portfolio Description */}
-      <div className="max-w-4xl mx-auto px-6 py-12">
-        <p className="text-lg text-neutral-300 mb-8">
-          My portrait photography is about revealing the authentic character of each subject. 
-          I work closely with individuals to create images that reflect their unique personality 
-          and story. Using natural light and thoughtful composition, I aim to create portraits 
-          that are both visually striking and emotionally resonant.
-        </p>
-      </div>
-
-      {/* Gallery */}
-      <div ref={galleryRef} className="max-w-7xl mx-auto px-6 pb-20">
+    <div className="bg-black text-white min-h-screen flex flex-col">
+      {/* Portrait Gallery with 3-Column Layout - Full Page */}
+      <div ref={galleryRef} className="w-full h-screen">
         {isPending && (
           <div className="flex justify-center py-12">
             <div className="loading-spinner"></div>
@@ -119,17 +109,63 @@ const PortraitPortfolio = () => {
         )}
         
         {portraitPhotos && portraitPhotos.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {portraitPhotos.map((photo) => (
-              <div key={photo.id} className="gallery-item overflow-hidden rounded-lg">
-                <img 
-                  src={photo.link} 
-                  alt={photo.name} 
-                  className="w-full h-96 object-cover transition-transform duration-500 hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-            ))}
+          <div className="portrait-gallery-grid">
+            {/* Column 1 */}
+            <div className="portrait-column">
+              {portraitPhotos
+                .filter((_, index) => index % 3 === 0)
+                .map((photo, index) => (
+                  <div 
+                    key={photo.id} 
+                    ref={addToRefs}
+                    className="portrait-grid-item"
+                  >
+                    <img 
+                      src={photo.link} 
+                      alt={`Portrait ${index * 3 + 1}`} 
+                      className="portrait-grid-image"
+                    />
+                  </div>
+                ))}
+            </div>
+            
+            {/* Column 2 */}
+            <div className="portrait-column">
+              {portraitPhotos
+                .filter((_, index) => index % 3 === 1)
+                .map((photo, index) => (
+                  <div 
+                    key={photo.id} 
+                    ref={addToRefs}
+                    className="portrait-grid-item"
+                  >
+                    <img 
+                      src={photo.link} 
+                      alt={`Portrait ${index * 3 + 2}`} 
+                      className="portrait-grid-image"
+                    />
+                  </div>
+                ))}
+            </div>
+            
+            {/* Column 3 */}
+            <div className="portrait-column">
+              {portraitPhotos
+                .filter((_, index) => index % 3 === 2)
+                .map((photo, index) => (
+                  <div 
+                    key={photo.id} 
+                    ref={addToRefs}
+                    className="portrait-grid-item"
+                  >
+                    <img 
+                      src={photo.link} 
+                      alt={`Portrait ${index * 3 + 3}`} 
+                      className="portrait-grid-image"
+                    />
+                  </div>
+                ))}
+            </div>
           </div>
         ) : (
           <div className="text-center text-neutral-400 py-12">
@@ -138,15 +174,6 @@ const PortraitPortfolio = () => {
         )}
       </div>
 
-      {/* Back to Portfolio Link */}
-      <div className="text-center pb-16">
-        <a 
-          href="/" 
-          className="inline-block px-6 py-2 border border-white text-white hover:bg-white hover:text-black transition-colors rounded-md"
-        >
-          Back to Home
-        </a>
-      </div>
     </div>
   )
 }
